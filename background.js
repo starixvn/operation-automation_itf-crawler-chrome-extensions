@@ -1,3 +1,42 @@
+// Open popup in a separate window when extension icon is clicked
+let popupWindowId = null;
+
+chrome.action.onClicked.addListener(() => {
+  // Check if the popup window is already open
+  if (popupWindowId !== null) {
+    chrome.windows.get(popupWindowId, (window) => {
+      if (chrome.runtime.lastError || !window) {
+        // Window was closed, create a new one
+        createPopupWindow();
+      } else {
+        // Window exists, focus it
+        chrome.windows.update(popupWindowId, { focused: true });
+      }
+    });
+  } else {
+    createPopupWindow();
+  }
+});
+
+function createPopupWindow() {
+  chrome.windows.create({
+    url: 'popup.html',
+    type: 'popup',
+    width: 1250,
+    height: 800,
+    focused: true
+  }, (window) => {
+    popupWindowId = window.id;
+  });
+}
+
+// Listen for window close event to reset the window ID
+chrome.windows.onRemoved.addListener((windowId) => {
+  if (windowId === popupWindowId) {
+    popupWindowId = null;
+  }
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'exportCSV') {
     exportToCSV(request.data);

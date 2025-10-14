@@ -6,19 +6,21 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "downloads"
+    "downloads",
+    "storage"
   ],
   "host_permissions": [
-    "https://www.itftennis.com/*"
+    "https://www.itftennis.com/*",
+    "https://*.nexdev.net/*",
+    "http://localhost:5000/*"
   ],
   "action": {
-    "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
   "content_scripts": [
     {
       "matches": ["https://www.itftennis.com/*"],
-      "js": ["content.js"]
+      "js": ["jquery.min.js", "content.js"]
     }
   ],
   "background": {

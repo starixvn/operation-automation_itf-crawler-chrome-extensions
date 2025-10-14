@@ -8,6 +8,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     });
     return true; // Required for async response
   }
+  
+  if (request.action === 'crawlLeague') {
+    crawlLeagueData(request.month, request.year).then(data => {
+      sendResponse({ success: true, data: data });
+    }).catch(error => {
+      sendResponse({ success: false, error: error.message });
+    });
+    return true;
+  }
 });
 
 async function crawlData() {
@@ -91,4 +100,43 @@ function getTournamentSurface(element) {
 function getTournamentPrize(element) {
   const prizeElement = element.querySelector('.tournament-prize');
   return prizeElement ? prizeElement.textContent.trim() : '';
+}
+
+async function crawlLeagueData(month, year) {
+  try {
+    // Construct the URL for the specific month and year
+    const url = `https://www.itftennis.com/en/tournament-calendar/${year}/${month}/`;
+    
+    // Navigate to the URL if we're not already there
+    if (window.location.href !== url) {
+      window.location.href = url;
+      // Wait for navigation and page load
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+
+    // Wait for the league list to be loaded
+    await waitForElement('.tournament-list');
+    
+    const leagues = [];
+    const leagueElements = document.querySelectorAll('.tournament-item');
+
+    for (const element of leagueElements) {
+      const league = {
+        name: getTournamentName(element),
+        date: getTournamentDate(element),
+        location: getTournamentLocation(element),
+        category: getTournamentCategory(element),
+        surface: getTournamentSurface(element),
+        prize: getTournamentPrize(element),
+        month: month,
+        year: year
+      };
+      leagues.push(league);
+    }
+
+    return leagues;
+  } catch (error) {
+    console.error('Error crawling league data:', error);
+    throw error;
+  }
 }

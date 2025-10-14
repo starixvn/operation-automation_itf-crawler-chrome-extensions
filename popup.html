@@ -4,14 +4,18 @@
   <title>ITF Tennis Data Crawler</title>
   <style>
     body {
-      width: 400px;
+      width: 1200px;
       padding: 15px;
       font-family: Arial, sans-serif;
+    }
+    .container {
+      overflow-x: auto;
     }
     .container {
       display: flex;
       flex-direction: column;
       gap: 15px;
+      min-width: 1170px; /* 1200px - 2*15px padding */
     }
     .row {
       display: flex;
@@ -63,17 +67,73 @@
       font-weight: bold;
       min-width: 50px;
     }
+    .tour-batch {
+      margin: 20px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+    }
+    .tour-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+    .tour-table th,
+    .tour-table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tour-table th:nth-child(2),
+    .tour-table td:nth-child(2) {
+      min-width: 400px;
+      max-width: 500px;
+    }
+    .tour-table th:nth-child(3),
+    .tour-table td:nth-child(3) {
+      min-width: 200px;
+    }
+    .tour-table th:nth-child(4),
+    .tour-table td:nth-child(4) {
+      min-width: 200px;
+    }
+    .tour-table th:nth-child(5),
+    .tour-table td:nth-child(5) {
+      min-width: 300px;
+    }
+    .tour-table th {
+      background-color: #f5f5f5;
+    }
+    .tour-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .crawl-matches-btn {
+      background-color: #2196F3;
+    }
+    .crawl-matches-btn:hover {
+      background-color: #1976D2;
+    }
+    .tour-section {
+      margin-top: 20px;
+      display: none;
+    }
+    .tour-section h3 {
+      margin: 0 0 10px 0;
+      color: #2196F3;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>ITF Tennis Data Crawler</h2>
     <div class="row">
-      <button id="startCrawl">Start Crawling</button>
-      <button id="exportCSV">Export to CSV</button>
-    </div>
-    <div class="row">
-      <button id="crawlLeague">Crawl League</button>
+      <button id="crawlTour">Crawl Tournaments</button>
       <div class="date-filters">
         <label>Month:</label>
         <select id="monthSelect"></select>
@@ -82,7 +142,15 @@
       </div>
     </div>
     <div id="status"></div>
+    <div id="tourResults" class="tour-section">
+      <h3>Tournaments</h3>
+      <button id="crawl-all-matches-btn">Crawl All Matches</button>
+      <button id="push-all-matches-btn">Push All Matches</button>
+      <div id="tours"></div>
+    </div>
   </div>
+  <script src="jquery.min.js"></script>
   <script src="popup.js"></script>
+  
 </body>
 </html>
