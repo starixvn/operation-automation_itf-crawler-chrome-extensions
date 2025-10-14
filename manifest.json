@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "ITF Tennis Data Crawler",
+  "version": "1.0",
+  "description": "Chrome extension to crawl data from ITF Tennis website and export to CSV",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://www.itftennis.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.itftennis.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
