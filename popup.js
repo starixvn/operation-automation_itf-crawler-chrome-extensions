@@ -1,4 +1,5 @@
 const itfTennisServerUrl = "https://operationcrawlerapi.klc.nexdev.net/api/Tennis/itf-tennis";
+const atpTourServerUrl = "https://operationcrawlerapi.klc.nexdev.net/api/Tennis/atp-tour";
 
 $(document).ready(function () {
   const $crawlTourButton = $("#crawlTour");
@@ -83,8 +84,13 @@ $(document).ready(function () {
     }
   });
 
-  $("#push-all-matches-btn").on("click", async function () {    
-    pushMatchesToServer();
+  $("#push-all-itf-matches-btn").on("click", async function () {    
+    pushItfTennisMatchesToServer();
+  });
+
+  
+  $("#push-all-atp-matches-btn").on("click", async function () {    
+    pushAtpTourMatchesToServer();
   });
 
   function showStatus(message, isError = false) {
@@ -92,6 +98,13 @@ $(document).ready(function () {
     $statusDiv.show();
     $statusDiv.attr("class", isError ? "error" : "success");
   }
+
+  function showAtpTourStatus(message, isError = false) {
+    $("#atp-tour-status").text(message);
+    $("#atp-tour-status").show();
+    $("#atp-tour-status").attr("class", isError ? "error" : "success");    
+  }
+
 
   $crawlTourButton.on("click", async () => {
     try {
@@ -221,7 +234,7 @@ $(document).ready(function () {
 
       // Add controls
       const $controls = $(
-        '<div class="tour-controls"><button class="crawl-matches-btn">Crawl Matches</button></div>'
+        '<div class="tour-controls"><button class="crawl-matches-btn" type="button">Crawl Matches</button></div>'
       );
 
       // Add event listener for header checkbox
@@ -367,8 +380,9 @@ $(document).ready(function () {
     }
   }
 
-  async function pushMatchesToServer() {  
-    try {
+  async function pushItfTennisMatchesToServer() {  
+    try {  
+      disableAllButtons();
       showStatus("Pushing matches to server...");
       const tournaments = await getDataModel();
       const response = await fetch(itfTennisServerUrl, {
@@ -388,5 +402,46 @@ $(document).ready(function () {
       showStatus("Error pushing matches: " + error.message, true);
       console.error("Error:", error);
     }
+    finally {
+      enableAllButtons();
+    }
+  }
+
+  
+  async function pushAtpTourMatchesToServer() {  
+    try {
+      disableAllButtons();
+      showAtpTourStatus("Pushing atp tour matches to server...");      
+      const response = await fetch(atpTourServerUrl, {
+        method: 'GET'      
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to push atp tour matches");
+      }
+
+      showAtpTourStatus("Successfully pushed atp tour matches to server!");
+    } catch (error) {
+      showAtpTourStatus("Error pushing atp tour matches: " + error.message, true);
+      console.error("Error:", error);
+    }
+    finally {
+      enableAllButtons();
+    }
+  }
+
+  function disableAllButtons() {
+    $("#crawlTour").prop("disabled", true);
+    $(".crawl-matches-btn").prop("disabled", true);
+    $("#crawl-all-matches-btn").prop("disabled", true);
+    $("#push-all-itf-matches-btn").prop("disabled", true);
+    $("#push-all-atp-matches-btn").prop("disabled", true);
+  }
+  function enableAllButtons() { 
+    $("#crawlTour").prop("disabled", false);
+    $(".crawl-matches-btn").prop("disabled", false);
+    $("#crawl-all-matches-btn").prop("disabled", false);
+    $("#push-all-itf-matches-btn").prop("disabled", false);
+    $("#push-all-atp-matches-btn").prop("disabled", false);
   }
 });

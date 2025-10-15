@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>ITF Tennis Data Crawler</title>
   <style>
@@ -8,31 +9,38 @@
       padding: 15px;
       font-family: Arial, sans-serif;
     }
+
     .container {
       overflow-x: auto;
     }
+
     .container {
       display: flex;
       flex-direction: column;
       gap: 15px;
-      min-width: 1170px; /* 1200px - 2*15px padding */
+      min-width: 1170px;
+      /* 1200px - 2*15px padding */
     }
+
     .row {
       display: flex;
       gap: 10px;
       align-items: center;
     }
+
     .date-filters {
       display: flex;
       gap: 10px;
       align-items: center;
     }
+
     select {
       padding: 8px;
       border: 1px solid #ddd;
       border-radius: 4px;
       background-color: white;
     }
+
     button {
       padding: 8px 16px;
       background-color: #4CAF50;
@@ -42,42 +50,51 @@
       cursor: pointer;
       min-width: 120px;
     }
+
     button:hover {
       background-color: #45a049;
     }
+
     button:disabled {
       background-color: #cccccc;
       cursor: not-allowed;
     }
-    #status {
+
+    #status, #atp-tour-status {
       margin-top: 10px;
       padding: 10px;
       border-radius: 4px;
       display: none;
     }
+
     .success {
       background-color: #dff0d8;
       color: #3c763d;
     }
+
     .error {
       background-color: #f2dede;
       color: #a94442;
     }
+
     label {
       font-weight: bold;
       min-width: 50px;
     }
+
     .tour-batch {
       margin: 20px 0;
       border: 1px solid #ddd;
       border-radius: 4px;
       padding: 15px;
     }
+
     .tour-table {
       width: 100%;
       border-collapse: collapse;
       margin: 10px 0;
     }
+
     .tour-table th,
     .tour-table td {
       padding: 8px;
@@ -87,53 +104,69 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .tour-table th:nth-child(2),
     .tour-table td:nth-child(2) {
       min-width: 400px;
       max-width: 500px;
     }
+
     .tour-table th:nth-child(3),
     .tour-table td:nth-child(3) {
       min-width: 200px;
     }
+
     .tour-table th:nth-child(4),
     .tour-table td:nth-child(4) {
       min-width: 200px;
     }
+
     .tour-table th:nth-child(5),
     .tour-table td:nth-child(5) {
       min-width: 300px;
     }
+
     .tour-table th {
       background-color: #f5f5f5;
     }
+
     .tour-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 10px;
     }
+
     .crawl-matches-btn {
       background-color: #2196F3;
     }
+
     .crawl-matches-btn:hover {
       background-color: #1976D2;
     }
+
     .tour-section {
       margin-top: 20px;
       display: none;
     }
+
     .tour-section h3 {
       margin: 0 0 10px 0;
       color: #2196F3;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
+    <h2>Atp Tour Data Crawler</h2>
+    <div class="row">
+      <button id="push-all-atp-matches-btn" type="button">Push All ATP Matches</button>
+    </div>
+    <div id="atp-tour-status"></div>
     <h2>ITF Tennis Data Crawler</h2>
     <div class="row">
-      <button id="crawlTour">Crawl Tournaments</button>
+      <button id="crawlTour" type="button">Crawl Tournaments</button>
       <div class="date-filters">
         <label>Month:</label>
         <select id="monthSelect"></select>
@@ -144,13 +177,14 @@
     <div id="status"></div>
     <div id="tourResults" class="tour-section">
       <h3>Tournaments</h3>
-      <button id="crawl-all-matches-btn">Crawl All Matches</button>
-      <button id="push-all-matches-btn">Push All Matches</button>
+      <button id="crawl-all-matches-btn" type="button">Crawl All Matches</button>
+      <button id="push-all-itf-matches-btn" type="button">Push All ITF Matches</button>
       <div id="tours"></div>
     </div>
   </div>
   <script src="jquery.min.js"></script>
   <script src="popup.js"></script>
-  
+
 </body>
+
 </html>
