@@ -1,7 +1,7 @@
 const itfTennisServerUrl =
-  "https://operationcrawlerapi.klc.nexdev.net/api/Tennis/itf-tennis";
+  "https://ops-api.nexdev.net/api/Tennis/itf-tennis";
 const atpTourServerUrl =
-  "https://operationcrawlerapi.klc.nexdev.net/api/Tennis/atp-tour";
+  "https://ops-api.nexdev.net/api/Tennis/atp-tour";
 
 // Initialize month and year dropdowns
 function initializeDropdowns() {
