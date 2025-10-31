@@ -496,7 +496,7 @@ async function pushItfTennisMatchesToServer() {
   }
 }
 
-async function pushAtpTourMatchesToServer() {
+async function pushAllDataToServer() {
   try {
     disableAllButtons();
     showAtpTourStatus("Pushing atp tour matches to server...");
@@ -612,7 +612,7 @@ $(document).ready(function () {
   });
 
   $("#push-all-atp-matches-btn").on("click", async function () {
-    pushAtpTourMatchesToServer();
+    pushAllDataToServer();
   });
 
   $("#crawlTour").on("click", async () => {
