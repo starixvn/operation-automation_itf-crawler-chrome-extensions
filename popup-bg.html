@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BG Page - All Sport Data</title>
+    <style>
+        body {
+            width: 1200px;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            overflow-x: auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 1170px;
+            /* 1200px - 2*15px padding */
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        label {
+            font-weight: bold;
+            min-width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <button id="home-btn" type="button">Home</button>
+            <button id="get-soccer-sport-data-btn" type="button">Get Soccer Data</button>
+            <button id="get-other-sport-data-btn" type="button">Get other Sport Data</button>
+        </div>
+        <div id="status"></div>
+    </div>
+
+    <script src="jquery.min.js"></script>
+    <script src="popup-bg.js"></script>
+
+</body>
+
+</html>
