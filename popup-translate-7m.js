@@ -3,17 +3,13 @@ const soccer7mServerUrl = "http://localhost:5000/api/Tennis/7m-soccer";
 
 
 $(document).ready(function () {
-  
-  $("#soccer-crawl-btn").on("click", async function () {    
+
+  $("#soccer-crawl-btn").on("click", async function () {
     try {
       disableAllButtons('soccer');
-      const { minPlayerId, maxPlayerId } = getPlayerIdRange('soccer');
-      for(let i = minPlayerId; i <= maxPlayerId; i += 1000) {
-        let players = await queryAllPlayers('soccer', i, i + 999);
-        await setPlayersToStorage('soccer', players);
-      }
-      
-      pushSoccerToServer();
+
+      await queryAllSoccerPlayers();
+      await pushSoccerToServer();
       showStatus('soccer',
         `Successfully queried all soccer data. Total players: ${players.length}`
       );
@@ -35,17 +31,13 @@ $(document).ready(function () {
     }
   });
 
-  
+
   $("#basketball-crawl-btn").on("click", async function () {
     try {
       disableAllButtons('basketball');
-      const { minPlayerId, maxPlayerId } = getPlayerIdRange('basketball');
-      for(let i = minPlayerId; i <= maxPlayerId; i += 1000) {
-        let players = await queryAllPlayers('basketball', i, i + 999);
-        await setPlayersToStorage('basketball', players);
-      }
-            
-      pushBasketballToServer();
+      await queryAllBasketballPlayers();
+
+      await pushBasketballToServer();
       showStatus('basketball',
         `Successfully queried all basketball data. Total players: ${players.length}`
       );
@@ -67,12 +59,28 @@ $(document).ready(function () {
     }
   });
 
+  async function queryAllSoccerPlayers() {
+    const { minPlayerId, maxPlayerId } = getPlayerIdRange('soccer');
+    for (let i = minPlayerId; i <= maxPlayerId; i += 1000) {
+      let players = await queryAllPlayers('soccer', i, i + 999);
+      await setPlayersToStorage('soccer', players);
+    }
+  }
+
+  async function queryAllBasketballPlayers() {
+    const { minPlayerId, maxPlayerId } = getPlayerIdRange('basketball');
+    for (let i = minPlayerId; i <= maxPlayerId; i += 1000) {
+      let players = await queryAllPlayers('basketball', i, i + 999);
+      await setPlayersToStorage('basketball', players);
+    }
+  }
+
   async function queryAllPlayers(sport, fromId, toId) {
     const playersFromStorage = await getPlayersFromStorage(sport);
     const playerIds = playersFromStorage.map(player => player.id);
     const playerIdSet = new Set(playerIds);
-    
-    let players = [];    
+
+    let players = [];
     for (let i = fromId; i <= toId; i++) {
 
       if (playerIdSet.has(i)) {
@@ -116,16 +124,21 @@ $(document).ready(function () {
   }
 
   async function queryPlayer(sport, id, language) {
-    const url = getPlayerUrl(sport, id, language);
+    try {
+      const url = getPlayerUrl(sport, id, language);
 
-    const response = await fetch(url);
-    const htmlString = await response.text();
-    const player = parsePlayerName(htmlString);
+      const response = await fetch(url);
+      const htmlString = await response.text();
+      const player = parsePlayerName(htmlString);
 
-    return player ? { id, ...player } : null;
-
+      return player ? { id, ...player } : null;
+    }
+    catch (err) {
+      showStatus(sport, "Error query player: " + err.message, true);
+      return null;
+    }
   }
-  
+
   function getPlayerUrl(sport, id, language) {
     if (sport === 'soccer') {
       return language === 'big'
@@ -266,9 +279,9 @@ $(document).ready(function () {
               throw new Error("Failed to push matches");
             }
       */
-      showStatus('basketball',"Successfully pushed basketball data to server!");
+      showStatus('basketball', "Successfully pushed basketball data to server!");
     } catch (error) {
-      showStatus('basketball',"Error pushing basketball data to server: " + error.message, true);
+      showStatus('basketball', "Error pushing basketball data to server: " + error.message, true);
       console.error("Error:", error);
     } finally {
       enableAllButtons('soccer');
