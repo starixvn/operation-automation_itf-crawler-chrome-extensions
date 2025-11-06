@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>ATP Tour</title>
+  <title>Translator</title>
   <style>
     body {
       width: 1200px;
@@ -54,11 +54,12 @@
       cursor: not-allowed;
     }
 
-    #status {
+    .status-message {
       margin-top: 10px;
       padding: 10px;
       border-radius: 4px;
       display: none;
+      clear: both;
     }
 
     .success {
@@ -75,23 +76,43 @@
       font-weight: bold;
       min-width: 50px;
     }
-
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h2>Live Tennis</h2>
+    <h2>Translator</h2>
     <div class="row">
       <button id="home-btn" type="button">Home</button>
-      <button id="crawl-tennis-btn" type="button">Crawl Live Tennis</button>      
-      <button id="push-tennis-btn" type="button">Push Live Tennis</button>      
     </div>
-    <div id="status"></div>
+    <div class="row tennis">
+      <button id="tennis-crawl-btn" type="button">Crawl Live Tennis</button>
+      <button id="tennis-push-btn" type="button">Push Live Tennis</button>
+      <div class="status-message"></div>
+    </div>
+    <div class="row soccer">
+      <button id="soccer-crawl-btn" type="button">Crawl 7m.com Soccer</button>
+      <button id="soccer-push-btn" type="button">Push 7m.com Soccer</button>
+      <div class="status-message"></div>
+    </div>
+    <div class="row basketball">
+      <button id="basketball-crawl-btn" type="button">Crawl 7m.com Basketball</button>
+      <button id="basketball-push-btn" type="button">Push 7m.com Basketball</button>
+      <div class="status-message"></div>
+    </div>
+    <div class="row badminton">
+      <button id="badminton-crawl-btn" type="button">Crawl Badminton</button>
+      <button id="badminton-push-btn" type="button">Push Badminton</button>
+      <div class="status-message"></div>
+    </div>
     
-  <script src="jquery.min.js"></script>  
-  <script src="popup-translate.js"></script>
-  <script src="popup-translate-live-tennis-params.js"></script>
-  <script src="popup-translate-live-tennis.js"></script>  
+    <script src="jquery.min.js"></script>
+    <script src="popup-translate.js"></script>
+    <script src="popup-translate-live-tennis-params.js"></script>
+    <script src="popup-translate-live-tennis.js"></script>
+    <script src="popup-translate-7m.js"></script>
+    <script src="popup-translate-badminton-params.js"></script>
+    <script src="popup-translate-badminton.js"></script>
 </body>
+
 </html>

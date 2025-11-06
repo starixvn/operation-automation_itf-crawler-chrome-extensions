@@ -5,9 +5,9 @@ const liveTennisServerUrl = "http://localhost:5000/api/Tennis/live-tennis";
 
 $(document).ready(function () {
   // Add event listener for "Crawl All Matches" button
-  $("#crawl-tennis-btn").on("click", async function () {
+  $("#tennis-crawl-btn").on("click", async function () {
     try {
-      disableAllButtons();
+      disableAllButtons('tennis');
       const token = await getCsrfToken();
       const players = await queryAllData(token);
 
@@ -15,24 +15,24 @@ $(document).ready(function () {
         LiveTennisPlayers: players,
       });
       pushLiveTennisDataToServer();
-      showStatus(
+      showStatus('tennis',
         `Successfully queried all data. Total players: ${players.length}`
       );
     } catch (err) {
-      showStatus("Error query data: " + err.message, true);
+      showStatus('tennis', "Error query data: " + err.message, true);
     } finally {
-      enableAllButtons();
+      enableAllButtons('tennis');
     }
   });
 
-  $("#push-tennis-btn").on("click", async function () {
+  $("#tennis-push-btn").on("click", async function () {
     try {
-      disableAllButtons();
-     await pushLiveTennisDataToServer();
+      disableAllButtons('tennis');
+      await pushLiveTennisDataToServer();
     } catch (err) {
-      showStatus("Error push data: " + err.message, true);
+      showStatus('tennis', "Error push data: " + err.message, true);
     } finally {
-      enableAllButtons();
+      enableAllButtons('tennis');
     }
   });
 
@@ -90,7 +90,7 @@ $(document).ready(function () {
       currentPage++;
       recordCount += response.data.length;
       recordTotal = response.recordsTotal;
-      showStatus(`Queried ${recordCount} of ${recordTotal} rows of ${originalUrl}`);
+      showStatus('tennis', `Queried ${recordCount} of ${recordTotal} rows of ${originalUrl}`);
     }
 
     return distinctPlayers(allPlayers);
@@ -163,8 +163,8 @@ $(document).ready(function () {
 
   async function pushLiveTennisDataToServer() {
     try {
-      disableAllButtons();
-      showStatus("Pushing data to server...");
+      disableAllButtons('tennis');
+      showStatus('tennis', "Pushing data to server...");
       const result = await chrome.storage.local.get(["LiveTennisPlayers"]);
       const players = result.LiveTennisPlayers || [];
 
@@ -180,12 +180,12 @@ $(document).ready(function () {
         throw new Error("Failed to push matches");
       }
 
-      showStatus("Successfully pushed data to server!");
+      showStatus('tennis', "Successfully pushed data to server!");
     } catch (error) {
-      showStatus("Error pushing matches: " + error.message, true);
+      showStatus('tennis', "Error pushing matches: " + error.message, true);
       console.error("Error:", error);
     } finally {
-      enableAllButtons();
+      enableAllButtons('tennis');
     }
   }
 });

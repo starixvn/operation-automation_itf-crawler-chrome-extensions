@@ -7,13 +7,16 @@
     "activeTab",
     "scripting",
     "downloads",
-    "storage"
+    "storage",
+    "cookies"
   ],
   "host_permissions": [
     "https://www.itftennis.com/*",
     "https://*.nexdev.net/*",
     "http://localhost:5000/*",
-    "https://www.live-tennis.cn/*"
+    "https://www.live-tennis.cn/*",
+    "https://*.7m.com.cn/*",    
+    "https://*.badmintoncn.com/*"
   ],
   "action": {
     "default_icon": "icon.png"
