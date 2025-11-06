@@ -85,6 +85,9 @@ $(document).ready(function () {
     });
 
     const nonNullPlayers = players.filter(player => player !== null);
+    if(nonNullPlayers.length === 0) {
+      console.log(`No players found for url ${url}`);      
+    }
 
     return nonNullPlayers;
   }
@@ -111,7 +114,7 @@ $(document).ready(function () {
 
   async function getBadmintonCheckpoint() {
     const checkpoint = await chrome.storage.local.get('BadmintonCheckpoint');
-    return checkpoint.BadmintonCheckpoint || 0;
+    return checkpoint.BadmintonCheckpoint || -1;
   }
 
   async function setBadmintonCheckpoint(checkpoint) {
@@ -135,5 +138,18 @@ $(document).ready(function () {
         }
       }
     });
+  }
+
+  async function pushBadmintonToServer() {
+    try {
+      disableAllButtons('badminton');
+      showStatus('badminton', "Pushing badminton data to server...");
+      
+    } catch (err) {
+      showStatus('badminton', "Error push data: " + err.message, true);
+    }
+    finally {
+      enableAllButtons('badminton');
+    }
   }
 });

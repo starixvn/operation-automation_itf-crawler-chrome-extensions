@@ -1,5 +1,5 @@
 function showStatus(sport, message, isError = false) {
-  $item = $(`.${sport} .status-message`);
+  $item = $(`.${sport} div`);
   $item.text(message);
   $item.show();
   $item.attr("class", isError ? "error" : "success");
