@@ -1,5 +1,6 @@
 //const liveTennisServerUrl = "https://ops-api.nexdev.net/api/Tennis/live-tennis";
-const soccer7mServerUrl = "http://localhost:5000/api/Tennis/7m-soccer";
+const soccer7mServerUrl = "http://localhost:5000/api/Tennis/soccer-7m";
+const basketball7mServerUrl = "http://localhost:5000/api/Tennis/basketball-7m";
 
 
 $(document).ready(function () {
@@ -11,7 +12,7 @@ $(document).ready(function () {
       await queryAllSoccerPlayers();
       await pushSoccerToServer();
       showStatus('soccer',
-        `Successfully queried all soccer data. Total players: ${players.length}`
+        `Successfully queried all soccer data.`
       );
     } catch (err) {
       showStatus('soccer', "Error query soccer data: " + err.message, true);
@@ -39,7 +40,7 @@ $(document).ready(function () {
 
       await pushBasketballToServer();
       showStatus('basketball',
-        `Successfully queried all basketball data. Total players: ${players.length}`
+        `Successfully queried all basketball data.`
       );
     } catch (err) {
       showStatus('basketball', "Error query basketball data: " + err.message, true);
@@ -62,7 +63,7 @@ $(document).ready(function () {
   async function queryAllSoccerPlayers() {
     const { minPlayerId, maxPlayerId } = getPlayerIdRange('soccer');
     for (let i = minPlayerId; i <= maxPlayerId; i += 1000) {
-      let players = await queryAllPlayers('soccer', i, i + 999);
+      const players = await queryAllPlayers('soccer', i, i + 999);
       await setPlayersToStorage('soccer', players);
     }
   }
@@ -70,7 +71,7 @@ $(document).ready(function () {
   async function queryAllBasketballPlayers() {
     const { minPlayerId, maxPlayerId } = getPlayerIdRange('basketball');
     for (let i = minPlayerId; i <= maxPlayerId; i += 1000) {
-      let players = await queryAllPlayers('basketball', i, i + 999);
+      const players = await queryAllPlayers('basketball', i, i + 999);
       await setPlayersToStorage('basketball', players);
     }
   }
@@ -150,6 +151,7 @@ $(document).ready(function () {
         : `https://bdata.7m.com.cn/basketball_team_data/${id}/gb/index.shtml`;
     }
   }
+
 
   function parsePlayerName(htmlInput) {
     const parser = new DOMParser();
@@ -239,19 +241,19 @@ $(document).ready(function () {
       disableAllButtons('soccer');
       showStatus('soccer', "Pushing soccer data to server...");
       const players = await getSoccerPlayersFromStorage();
-      /*
-            const response = await fetch(liveTennisServerUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(players),
-            });
-      
-            if (!response.ok) {
-              throw new Error("Failed to push matches");
-            }
-      */
+
+      const response = await fetch(soccer7mServerUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(players),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to push matches");
+      }
+
       showStatus('soccer', "Successfully pushed soccer data to server!");
     } catch (error) {
       showStatus('soccer', "Error pushing soccer data to server: " + error.message, true);
@@ -266,19 +268,19 @@ $(document).ready(function () {
       disableAllButtons('soccer');
       showStatus('basketball', "Pushing basketball data to server...");
       const players = await getBasketballPlayersFromStorage();
-      /*
-            const response = await fetch(liveTennisServerUrl, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(players),
-            });
-      
-            if (!response.ok) {
-              throw new Error("Failed to push matches");
-            }
-      */
+
+      const response = await fetch(basketball7mServerUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(players),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to push matches");
+      }
+
       showStatus('basketball', "Successfully pushed basketball data to server!");
     } catch (error) {
       showStatus('basketball', "Error pushing basketball data to server: " + error.message, true);

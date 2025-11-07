@@ -3,6 +3,7 @@
   "name": "ITF Tennis Data Crawler",
   "version": "1.0",
   "description": "Chrome extension to crawl data from ITF Tennis website and export to CSV",
+  "charset": "utf-8",
   "permissions": [
     "activeTab",
     "scripting",
