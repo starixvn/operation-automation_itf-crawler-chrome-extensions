@@ -1,5 +1,5 @@
 //const liveTennisServerUrl = "https://ops-api.nexdev.net/api/Tennis/live-tennis";
-const badmintonrverUrl = "http://localhost:5000/api/Tennis/badminton";
+const badmintonServerUrl = "http://localhost:5000/api/Tennis/badminton";
 
 
 $(document).ready(function () {
@@ -45,12 +45,19 @@ $(document).ready(function () {
   }
 
   async function crawlAllPages(countryCode) {
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 500; i++) {
       const players = await crawlPage(i, countryCode);
+      await sleep(3000);
+      if(!players) {
+        await sleep(10000);        
+        i--;
+        continue;
+      }
+
       if (players.length === 0) {
         break;
       }
-      await sleep(5000);
+      
       const playersFromStorage = await getPlayersFromStorage();
       const playerIds = playersFromStorage.map(player => player.id);
       const playerIdSet = new Set(playerIds);
@@ -67,6 +74,12 @@ $(document).ready(function () {
     if(html.includes("无信息")) {
       console.log(`No records found for url ${url}`);
       return [];
+    }
+
+    if(html.includes("操作频率过快")) {
+      console.log(`Spam detected for url ${url}`);
+      showStatus('badminton', "Spam detected for url ${url}, waiting 10 seconds...");
+      return null;
     }
 
     const parser = new DOMParser();
@@ -153,6 +166,21 @@ $(document).ready(function () {
     try {
       disableAllButtons('badminton');
       showStatus('badminton', "Pushing badminton data to server...");
+      const players = await getPlayersFromStorage();
+
+      const response = await fetch(badmintonServerUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(players),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to push matches");
+      }
+
+      showStatus('badminton', "Successfully pushed data to server!");
       
     } catch (err) {
       showStatus('badminton', "Error push data: " + err.message, true);

@@ -1,5 +1,3 @@
-//const liveTennisServerUrl = "https://ops-api.nexdev.net/api/Tennis/live-tennis";
-
 $(document).ready(function () {
   const cookieString = "cbo_click_cookie_49bff9e89f952072a225be526afdd430=1762395417; rcKA_379b_saltkey=rRCVzOwn; rcKA_379b_lastvisit=1762396973; rcKA_379b_viewid=tid_1868603; rcKA_379b_sendmail=1; rcKA_379b_seccode=1453.89517a73e59c39d096; rcKA_379b_ulastactivity=1762422973%7C0; rcKA_379b_auth=aa33GDADS4ra2ReHkgJSWDXSjkMTsovxGSJUc59p1xFLUQQQ0RsugBubpxGKVKkxyScMDQTPNkuw53LWd2qCLPGFVD%2F%2B; rcKA_379b_lastcheckfeed=3132168%7C1762422973; rcKA_379b_checkfollow=1; rcKA_379b_lip=Manual+Acting%2C1762419330; rcKA_379b_myrepeat_rr=R0; cbo_auth=1e9bFa1Pd0zg%2B%2FfcsTs32hku56yJLKOGIo5kDNsgATHPXIDqvIhzyeJdR9wp%2FQ; oms_auth=35f2tagWwMR5Va%2FmUsTEcE2mbZ7DPeoTlpmOLq9pQDmXWlSgVnw3RLW5SA7Hjw; rcKA_379b_lastact=1762422978%09api.php%09js; userLoginJudge3132168=y";
 
@@ -7,8 +5,7 @@ $(document).ready(function () {
     try {
       disableAllButtons('badminton-detail');
       setMultipleCookies(cookieString);
-      await crawlAllPlayers();
-      await pushBadmintonToServer();
+      await crawlAllPlayers();      
       showStatus('badminton', "Successfully crawled all data.");
     } catch (err) {
       showStatus('badminton', "Error crawl data: " + err.message, true);
@@ -99,7 +96,6 @@ $(document).ready(function () {
     const htmlContent = decoder.decode(buffer);
     return htmlContent;
   }
-
 
   async function getPlayersFromStorage() {
     const players = await chrome.storage.local.get('Badminton');
