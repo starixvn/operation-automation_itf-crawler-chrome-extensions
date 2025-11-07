@@ -32,9 +32,14 @@ $(document).ready(function () {
 
   async function crawlPlayers(fromId, offset) {
     const playerCheckpoint = await getBadmintonPlayerCheckpoint();
+    const playersFromStorage = await getPlayersFromStorage();
+    const playerIdSet = new Set(playersFromStorage.map(player => player.id));
     const players = [];
     for (let i = fromId; i < fromId + offset; i++) {
       if (i <= playerCheckpoint) {
+        continue;
+      }
+      if (playerIdSet.has(i)) {
         continue;
       }
       const player = await crawlDetailPlayer(i);
@@ -46,9 +51,7 @@ $(document).ready(function () {
     }
 
     await setBadmintonPlayerCheckpoint(fromId + offset - 1);
-
-    const playersFromStorage = await getPlayersFromStorage();
-    const playerIdSet = new Set(playersFromStorage.map(player => player.id));
+    
     const newPlayers = players.filter(player => !playerIdSet.has(player.id));
     const allPlayers = playersFromStorage.concat(newPlayers).sort((a, b) => a.id - b.id);
     await setPlayersToStorage(allPlayers);
