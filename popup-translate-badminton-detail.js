@@ -50,7 +50,8 @@ $(document).ready(function () {
       await sleep(3000);
     }
 
-    await setBadmintonPlayerCheckpoint(fromId + offset - 1);
+    const newCheckpoint = playerCheckpoint > fromId + offset - 1 ? playerCheckpoint : fromId + offset - 1;
+    await setBadmintonPlayerCheckpoint(newCheckpoint);
     
     const newPlayers = players.filter(player => !playerIdSet.has(player.id));
     const allPlayers = playersFromStorage.concat(newPlayers).sort((a, b) => a.id - b.id);
@@ -82,7 +83,7 @@ $(document).ready(function () {
         
         return {
             id: playerId,
-            chinese_name: chineseName,
+            simplified_name: chineseName,
             english_name: englishName
         };
     } else {

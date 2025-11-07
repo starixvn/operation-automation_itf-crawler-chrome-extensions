@@ -83,8 +83,8 @@ $(document).ready(function () {
 
       return {
         id: parseInt(id),
-        chinese_name,
-        english_name
+        english_name,
+        simplified_name: chinese_name,        
       };
     });
 

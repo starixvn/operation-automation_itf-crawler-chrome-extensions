@@ -122,34 +122,28 @@ $(document).ready(function () {
     return Array.from(playerMap.values());
   }
 
-  function parseSinglePlayer(item, originalUrl) {
+  function parseSinglePlayer(item) {
     const chinese_name = standardizePlayerName(item.full_name);
     return {
-      id: item.id,
-      url: originalUrl,
-      name: item.engname,
-      chinese_name: chinese_name,
-      country: item.ioc,
+      id: item.id,      
+      english_name: item.engname,
+      simplified_name: chinese_name      
     };
   }
 
 
-  function parseDoublePlayer(item, originalUrl) {
+  function parseDoublePlayer(item) {
     const chinese_name = standardizePlayerName(item.full_name);
     const player1 = {
-      id: item.id.split("/")[0].trim(),
-      url: originalUrl,
-      name: item.engname.split("/")[0].trim(),
-      chinese_name: chinese_name.split("/")[0].trim(),
-      country: item.ioc.split("/")[0].trim(),
+      id: item.id.split("/")[0].trim(),      
+      english_name: item.engname.split("/")[0].trim(),
+      simplified_name: chinese_name.split("/")[0].trim()      
     };
 
     const player2 = {
-      id: item.id.split("/")[1].trim(),
-      url: originalUrl,
-      name: item.engname.split("/")[1].trim(),
-      chinese_name: chinese_name.split("/")[1].trim(),
-      country: item.ioc.split("/")[1].trim(),
+      id: item.id.split("/")[1].trim(),      
+      english_name: item.engname.split("/")[1].trim(),
+      simplified_name: chinese_name.split("/")[1].trim()      
     };
 
     return [player1, player2];
