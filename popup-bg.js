@@ -1,14 +1,12 @@
 $(document).ready(function () {
-  // Initialize page
-  console.log("BG Page initialized");
 
   // Get All Sport Data button click handler
-  $("#get-other-sport-data-btn").click(function () {
-    getOtherSportData();
+  $("#get-all-data-btn").click(function () {
+    getBgData();
   });
 
-  $("#get-soccer-sport-data-btn").click(function () {
-    getSoccerSportData();
+  $("#get-job-status-btn").click(function () {
+    getJobStatus();
   });
 
   $("#home-btn").on("click", function () {
@@ -22,14 +20,12 @@ function showStatus(message, type = "info") {
   $("#status").attr("class", type);
 }
 
-async function getOtherSportData() {
+async function getJobStatus() {
   try {
-    $("#get-other-sport-data-btn").prop("disabled", true);
+    $("button").prop("disabled", true);
     showStatus("Triggering Bet Genius API...", "info");
-
     // TODO: Replace with your API URL
-    const apiUrl = "https://ops-api.nexdev.net/api/bg/bg-other-sports";
-    
+    const apiUrl = "https://bg-download.klc.nexdev.net/";
     const response = await fetch(apiUrl, {
       method: "GET"
     });
@@ -37,25 +33,25 @@ async function getOtherSportData() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     } else {
-    showStatus("Trigger Successfully", "success");
+      showStatus(await response.text(), "success");
     }
   } catch (error) {
     console.error("Error:", error);
     showStatus("Error: " + error.message, "error");
   } finally {
-    $("#get-other-sport-data-btn").prop("disabled", false);
+    $("button").prop("disabled", false);
   }
 }
 
 
-async function getSoccerSportData() {
+async function getBgData() {
   try {
-    $("#get-soccer-sport-data-btn").prop("disabled", true);
+    $("button").prop("disabled", true);
     showStatus("Triggering Bet Genius API...", "info");
 
     // TODO: Replace with your API URL
-    const apiUrl = "https://ops-api.nexdev.net/api/bg/bg-soccer";
-    
+    const apiUrl = "https://bg-download.klc.nexdev.net/api/run/all";
+
     const response = await fetch(apiUrl, {
       method: "GET"
     });
@@ -63,12 +59,12 @@ async function getSoccerSportData() {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     } else {
-    showStatus("Trigger Successfully", "success");
+      showStatus(await response.text(), "success");
     }
   } catch (error) {
     console.error("Error:", error);
     showStatus("Error: " + error.message, "error");
   } finally {
-    $("#get-soccer-sport-data-btn").prop("disabled", false);
+    $("button").prop("disabled", false);
   }
 }
