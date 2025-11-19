@@ -164,6 +164,11 @@ $(document).ready(function () {
 
     const titleText = titleElement.textContent.trim();
 
+    return parsePlayerNameFromText(titleText);
+  }
+
+  function parsePlayerNameFromText(titleText) {
+      
     const regex = /^(.*?)\((.*?)\)/;
     const match = titleText.match(regex);
 

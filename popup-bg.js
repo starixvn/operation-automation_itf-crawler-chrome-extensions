@@ -25,7 +25,7 @@ async function getJobStatus() {
     $("button").prop("disabled", true);
     showStatus("Triggering Bet Genius API...", "info");
     // TODO: Replace with your API URL
-    const apiUrl = "https://bg-download.klc.nexdev.net/";
+    const apiUrl = "https://ops-api.nexdev.net/api/bg/status";
     const response = await fetch(apiUrl, {
       method: "GET"
     });
@@ -50,7 +50,7 @@ async function getBgData() {
     showStatus("Triggering Bet Genius API...", "info");
 
     // TODO: Replace with your API URL
-    const apiUrl = "https://bg-download.klc.nexdev.net/api/run/all";
+    const apiUrl = "https://ops-api.nexdev.net/api/bg/run";
 
     const response = await fetch(apiUrl, {
       method: "GET"
