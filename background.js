@@ -41,6 +41,35 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'exportCSV') {
     exportToCSV(request.data);
   }
+
+  if (request.action === 'triggerWebhook') {
+    console.log('Background: Received triggerWebhook message', request.url);
+
+    fetch(request.url, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: request.body ? JSON.stringify(request.body) : undefined
+    })
+    .then(res => {
+      console.log("Background: Webhook response status:", res.status);
+      return res.json().catch(() => ({
+        status: res.status,
+        message: 'Request sent successfully'
+      }));
+    })
+    .then(data => {
+      console.log("Background: Webhook success:", data);
+      sendResponse({ success: true, data: data });
+    })
+    .catch(err => {
+      console.error("Background: Webhook error:", err);
+      sendResponse({ success: false, error: err.message });
+    });
+
+    return true;
+  }
 });
 
 function exportToCSV(data) {

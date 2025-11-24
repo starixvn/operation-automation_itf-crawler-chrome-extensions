@@ -18,9 +18,13 @@
     "https://*.nexdev.net/*",
     "http://localhost:5000/*",
     "https://www.live-tennis.cn/*",
-    "https://*.7m.com.cn/*",    
-    "https://*.badmintoncn.com/*"
+    "https://*.7m.com.cn/*",
+    "https://*.badmintoncn.com/*",
+    "https://n8n.nexdev.net/*"
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "action": {
     "default_icon": "icon.png"
   },
