@@ -30,7 +30,7 @@ $(document).ready(function () {
       chrome.runtime.sendMessage(
         {
           action: 'triggerWebhook',
-          url: 'https://n8n.nexdev.net/webhook/d0a29a84-df60-47c6-b129-971e57c0372a',
+          url: 'https://n8n.nexdev.net/webhook/0d4e1594-2e18-4a70-861d-941b74be9e94',
           body: {
             message: "Triggering translation webhook"
           }
